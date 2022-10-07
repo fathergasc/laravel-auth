@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="container">
-        <div class="p-3">
+        <a href="{{route('admin.posts.create')}}" class="btn btn-secondary my-1">Add Post</a>
+        <div>
             <table class="table table-dark table-striped">
                 <thead>
                 <tr>
