@@ -22,8 +22,15 @@
                         <td>{{$post->content}}</td>
                         <td>{{$post->slug}}</td>
                         <td>
-                            <a class="btn btn-warning" href="{{route('admin.posts.show', ['post' => $post->id])}}">Show</a>
-                            <a class="btn btn-info" href="{{route('admin.posts.edit', ['post' => $post->id])}}">Edit</a>
+                            <a class="btn btn-warning m-1" href="{{route('admin.posts.show', ['post' => $post->id])}}">Show</a>
+                            <a class="btn btn-info m-1" href="{{route('admin.posts.edit', ['post' => $post->id])}}">Edit</a>
+                            <form class="m-1 d-inline" action="{{route('admin.posts.destroy', ['post' => $post->id])}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this entry?')">
+
+                                @csrf
+                                @method('DELETE')
+                                <input class="btn btn-danger" type="submit" value="Delete">
+
+                            </form>
                         </td>
                     </tr>
                     @endforeach
