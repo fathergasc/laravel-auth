@@ -22,7 +22,7 @@
                         <td>{{$post->content}}</td>
                         <td>{{$post->slug}}</td>
                         <td>
-                            <a class="btn btn-warning" href="">Show</a>
+                            <a class="btn btn-warning" href="{{route('admin.posts.show', ['post' => $post->id])}}">Show</a>
                             <a class="btn btn-info" href="">Edit</a>
                         </td>
                     </tr>
