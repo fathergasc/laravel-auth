@@ -23,7 +23,7 @@
                         <td>{{$post->slug}}</td>
                         <td>
                             <a class="btn btn-warning" href="{{route('admin.posts.show', ['post' => $post->id])}}">Show</a>
-                            <a class="btn btn-info" href="">Edit</a>
+                            <a class="btn btn-info" href="{{route('admin.posts.edit', ['post' => $post->id])}}">Edit</a>
                         </td>
                     </tr>
                     @endforeach
