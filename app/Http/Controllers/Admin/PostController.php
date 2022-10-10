@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 class PostController extends Controller
@@ -43,7 +44,6 @@ class PostController extends Controller
             [
                 'title' => 'required|max:255',
                 'content' => 'required',
-                'slug' => 'required|unique:posts',
             ]
         );
 
@@ -52,6 +52,20 @@ class PostController extends Controller
         $newPost = new Post();
 
         $newPost->fill($data);
+
+        //create a unique slug from post title
+        $slug = Str::slug($newPost->title, '-');
+        $checkPost = Post::where('slug', $slug)->first();
+        $counter = 1;
+        while($checkPost) {
+            $slug = Str::slug($newPost->title . '-' . $counter, '-');
+            $counter++;
+            $checkPost = Post::where('slug', $slug)->first();
+        }
+
+        $newPost->slug = $slug;
+        //end slug method
+
         $newPost->save();
 
         return redirect()->route('admin.posts.index');
@@ -92,7 +106,6 @@ class PostController extends Controller
             [
                 'title' => 'required|max:255',
                 'content' => 'required',
-                'slug' => 'required|unique:posts',
             ]
         );
 
@@ -101,6 +114,20 @@ class PostController extends Controller
         $newPost = new Post();
 
         $newPost->fill($data);
+
+        //create a unique slug from post title
+        $slug = Str::slug($newPost->title, '-');
+        $checkPost = Post::where('slug', $slug)->first();
+        $counter = 1;
+        while($checkPost) {
+            $slug = Str::slug($newPost->title . '-' . $counter, '-');
+            $counter++;
+            $checkPost = Post::where('slug', $slug)->first();
+        }
+
+        $newPost->slug = $slug;
+        //end slug method
+
         $newPost->save();
 
         return redirect()->route('admin.posts.edit', compact('post'))->with('status', 'Post updated!');
