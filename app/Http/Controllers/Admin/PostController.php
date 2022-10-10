@@ -54,15 +54,7 @@ class PostController extends Controller
         $post->fill($data);
 
         //create a unique slug from post title
-        $slug = Str::slug($post->title, '-');
-        $checkPost = Post::where('slug', $slug)->first();
-        $counter = 1;
-        while($checkPost) {
-            $slug = Str::slug($post->title . '-' . $counter, '-');
-            $counter++;
-            $checkPost = Post::where('slug', $slug)->first();
-        }
-
+        $slug = $this->generateSlug($post->title);
         $post->slug = $slug;
         //end slug method
 
@@ -112,23 +104,25 @@ class PostController extends Controller
         $data = $request->all();
 
         if($post->title !== $data['title']) {
-            //create a unique slug from post title
-            $slug = Str::slug($data['title'], '-');
-            $checkPost = Post::where('slug', $slug)->first();
-            $counter = 1;
-            while($checkPost) {
-                $slug = Str::slug($data['title'] . '-' . $counter, '-');
-                $counter++;
-                $checkPost = Post::where('slug', $slug)->first();
-            }
-
-            $post['slug'] = $slug;
-            //end slug method
+            $data['slug'] = $this->generateSlug($data['title']);
         }
 
         $post->update($data);
 
         return redirect()->route('admin.posts.edit', compact('post'))->with('status', 'Post updated!');
+    }
+
+    protected function generateSlug($title) {
+        $slug = Str::slug($title, '-');
+        $checkPost = Post::where('slug', $slug)->first();
+        $counter = 1;
+        while($checkPost) {
+            $slug = Str::slug($title . '-' . $counter, '-');
+            $counter++;
+            $checkPost = Post::where('slug', $slug)->first();
+        }
+
+        return $slug;
     }
 
     /**
