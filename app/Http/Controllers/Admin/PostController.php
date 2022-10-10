@@ -49,24 +49,24 @@ class PostController extends Controller
 
         $data = $request->all();
 
-        $newPost = new Post();
+        $post = new Post();
 
-        $newPost->fill($data);
+        $post->fill($data);
 
         //create a unique slug from post title
-        $slug = Str::slug($newPost->title, '-');
+        $slug = Str::slug($post->title, '-');
         $checkPost = Post::where('slug', $slug)->first();
         $counter = 1;
         while($checkPost) {
-            $slug = Str::slug($newPost->title . '-' . $counter, '-');
+            $slug = Str::slug($post->title . '-' . $counter, '-');
             $counter++;
             $checkPost = Post::where('slug', $slug)->first();
         }
 
-        $newPost->slug = $slug;
+        $post->slug = $slug;
         //end slug method
 
-        $newPost->save();
+        $post->save();
 
         return redirect()->route('admin.posts.index');
     }
@@ -111,24 +111,22 @@ class PostController extends Controller
 
         $data = $request->all();
 
-        $newPost = new Post();
-
-        $newPost->fill($data);
-
-        //create a unique slug from post title
-        $slug = Str::slug($newPost->title, '-');
-        $checkPost = Post::where('slug', $slug)->first();
-        $counter = 1;
-        while($checkPost) {
-            $slug = Str::slug($newPost->title . '-' . $counter, '-');
-            $counter++;
+        if($post->title !== $data['title']) {
+            //create a unique slug from post title
+            $slug = Str::slug($data['title'], '-');
             $checkPost = Post::where('slug', $slug)->first();
+            $counter = 1;
+            while($checkPost) {
+                $slug = Str::slug($data['title'] . '-' . $counter, '-');
+                $counter++;
+                $checkPost = Post::where('slug', $slug)->first();
+            }
+
+            $post['slug'] = $slug;
+            //end slug method
         }
 
-        $newPost->slug = $slug;
-        //end slug method
-
-        $newPost->save();
+        $post->update($data);
 
         return redirect()->route('admin.posts.edit', compact('post'))->with('status', 'Post updated!');
     }
