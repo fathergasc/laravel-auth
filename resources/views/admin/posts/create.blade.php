@@ -19,8 +19,8 @@
         @csrf
 
         <div class="mb-3">
-            <label for="category_id" class="form-label">Title</label>
-            <select class="form-control @error('title') is-invalid @enderror" id="category_id" name="category_id">
+            <label for="category_id" class="form-label">Category</label>
+            <select class="form-control @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
                 <option {{(old('category_id') == '')? 'selected':''}}  value="">No category</option>
                 @foreach ($categories as $category)
                     <option {{(old('category_id') == $category->id)? 'selected':''}} value="{{$category->id}}">{{$category->name}}</option>
