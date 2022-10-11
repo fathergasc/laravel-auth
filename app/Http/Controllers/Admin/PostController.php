@@ -47,6 +47,7 @@ class PostController extends Controller
             [
                 'title' => 'required|max:255',
                 'content' => 'required',
+                'category_id' => 'nullable|exists:categories,id'
             ]
         );
 
